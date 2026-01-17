@@ -50,8 +50,22 @@
         }
 
         @keyframes twinkle {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.3; transform: scale(0.5); }
+            0% {
+                opacity: 1;
+                transform: scale(1);
+                left: var(--start-x);
+                top: var(--start-y);
+            }
+            50% {
+                opacity: 0.3;
+                transform: scale(0.5);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+                left: var(--end-x);
+                top: var(--end-y);
+            }
         }
 
         /* Цитата с эффектом печати */
@@ -69,18 +83,25 @@
             text-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700;
             min-height: 30px;
             overflow: hidden;
-            border-right: 3px solid #FFD700;
-            animation: blink 0.7s step-end infinite;
+        }
+
+        :root {
+            --cursor-blink-speed: 1s;
         }
 
         @keyframes blink {
-            50% { border-color: transparent; }
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
         }
 
         /* Курсор для печати */
         .quote::after {
             content: '|';
-            animation: blink 0.7s step-end infinite;
+            color: #FFD700;
+            text-shadow: 0 0 10px #FFD700;
+            animation: blink var(--cursor-blink-speed) step-end infinite;
+            margin-left: 2px;
+            display: inline-block;
         }
 
         /* Блок ссылок */
@@ -371,16 +392,25 @@
                 star.style.width = size + 'px';
                 star.style.height = size + 'px';
                 
-                // Случайная позиция
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
+                // Начальная позиция
+                const startX = Math.random() * 100 + '%';
+                const startY = Math.random() * 100 + '%';
+                
+                // Конечная позиция (при исчезновении)
+                const endX = Math.random() * 100 + '%';
+                const endY = Math.random() * 100 + '%';
+                
+                star.style.setProperty('--start-x', startX);
+                star.style.setProperty('--start-y', startY);
+                star.style.setProperty('--end-x', endX);
+                star.style.setProperty('--end-y', endY);
                 
                 // Случайная продолжительность анимации
-                const duration = (Math.random() * 3 + 1) + 's';
+                const duration = (Math.random() * 5 + 5) + 's';
                 star.style.setProperty('--duration', duration);
                 
                 // Случайная задержка
-                star.style.animationDelay = Math.random() * 5 + 's';
+                star.style.animationDelay = Math.random() * 2 + 's';
                 
                 container.appendChild(star);
             }
@@ -418,4 +448,3 @@
     </script>
 </body>
 </html>
-
